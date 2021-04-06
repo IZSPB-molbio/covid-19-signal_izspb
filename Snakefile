@@ -477,13 +477,42 @@ rule get_mapping_reads:
         samtools fastq -1 {output.r1} -2 {output.r2} -s {output.s} {output.bam} 2>> {log} 
         """
 
+rule clip_alignments:
+    conda:
+        'conda_envs/bamUtils.yaml'
+    output:
+        t1 = temp('{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.trimBam.bam'),
+        t2 = temp('{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.calmd.bam'),
+        def = '{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam'
+    input:
+        bam = '{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam',
+        reference = os.path.join(exec_dir, config['viral_reference_genome'])
+    params:
+        temp_dir = '{sn}/core'
+    log:
+        '{sn}/core/{sn}_clip_alignments.log'
+    benchmark:
+        '{sn}/benchmarks/{sn}_clip_alignments.benchmark.tsv'
+    shell:
+        'bam trimBam '
+        '{input.bam} '
+        '{output.t1} '
+        '10 -c 2> {log}'
+        'samtools calmd -b '
+        '{output.t1} '
+        '{input.reference} 2>> {log} 1> {output.t2}'
+        'samtools sort '
+        '-o {output.def} '
+        '-T {params.temp_dir} '
+        '{output.t2} &>> {log}'
+
 rule run_ivar_consensus:
     conda: 
         'conda_envs/ivar.yaml'
     output:
         '{sn}/core/{sn}.consensus.fa'
     input:
-        "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam"
+        "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam"
     log:
         '{sn}/core/{sn}_ivar_consensus.log'
     benchmark:

@@ -478,12 +478,11 @@ rule get_mapping_reads:
         """
 
 rule clip_alignments:
-    conda:
-        'conda_envs/bamUtils.yaml'
+    conda: 'conda_envs/bamUtils.yaml'
     output:
-        t1 = temp('{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.trimBam.bam'),
-        t2 = temp('{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.calmd.bam'),
-        def = '{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam'
+        t1 = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.trimBam.bam",
+        t2 = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.calmd.bam",
+        defi = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam"
     input:
         bam = '{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam',
         reference = os.path.join(exec_dir, config['viral_reference_genome'])
@@ -502,7 +501,7 @@ rule clip_alignments:
         '{output.t1} '
         '{input.reference} 2>> {log} 1> {output.t2}'
         'samtools sort '
-        '-o {output.def} '
+        '-o {output.defi} '
         '-T {params.temp_dir} '
         '{output.t2} &>> {log}'
 

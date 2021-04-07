@@ -216,7 +216,7 @@ rule ncov_tools:
         phylo_include_seqs = os.path.join(exec_dir, config['phylo_include_seqs'])
     input:
         consensus = expand('{sn}/core/{sn}.consensus.fa', sn=sample_names),
-        primertrimmed_bams = expand("{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam", sn=sample_names),
+        primertrimmed_bams = expand("{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam", sn=sample_names),
         bams = expand("{sn}/core/{sn}_viral_reference.mapping.bam", sn=sample_names),
         variants = expand("{sn}/core/{sn}_ivar_variants.tsv", sn=sample_names)
     script: "scripts/ncov-tools.py"
@@ -551,7 +551,7 @@ rule run_ivar_variants:
     input:
         reference = os.path.join(exec_dir, config['viral_reference_genome']),
         indexed_reference = os.path.join(exec_dir, config['viral_reference_genome']) + ".fai",
-        read_bam = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam",
+        read_bam = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam",
         viral_reference_gff = os.path.join(exec_dir, config['viral_reference_feature_coords'])
     log:
         '{sn}/core/{sn}_ivar_variants.log'
@@ -606,7 +606,7 @@ rule run_freebayes:
         variants = '{sn}/freebayes/{sn}.variants.norm.vcf'
     input:
         reference = os.path.join(exec_dir, config['viral_reference_genome']),
-        read_bam = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam"
+        read_bam = "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam"
     params:
         out = '{sn}/freebayes/work/{sn}',
         freebayes_min_coverage_depth = config['var_min_coverage_depth'],
@@ -662,7 +662,7 @@ rule coverage_depth:
     output:
         '{sn}/coverage/{sn}_depth.txt'
     input:
-        "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.bam"
+        "{sn}/core/{sn}_viral_reference.mapping.primertrimmed.sorted.clip.bam"
     benchmark:
         "{sn}/benchmarks/{sn}_coverage_depth.benchmark.tsv"
     shell:

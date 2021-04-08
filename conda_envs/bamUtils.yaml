@@ -1,0 +1,8 @@
+name: bamUtils
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - bamutil=1.0.15
+  - samtools=1.10

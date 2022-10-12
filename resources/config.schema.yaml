@@ -35,7 +35,7 @@ var_min_coverage_depth:
 var_min_freq_threshold:
     type: float
     default: 0.25
-    description: "ivar frequency threshold to call variant (ivar variants: -t )"
+    description: "ivar frequency threshold to call variant (ivar variants: -t)"
 var_min_variant_quality:
     type: int
     default: 20
@@ -55,6 +55,46 @@ run_freebayes:
     type: boolean
     default: False
     description: "optionally run FreeBayes variant calling and consensus sequence generation"
+pangolin:
+    type: string
+    default: "None"
+    description: "Pangolin version"
+pangolearn:
+    type: string
+    default: "None"
+    description: "pangoLEARN version"
+constellations:
+    type: string
+    default: "None"
+    description: "Constellations version"
+scorpio:
+    type: string
+    default: "None"
+    description: "Scorpio version"
+pango-designation:
+    type: string
+    default: "None"
+    description: "Pango-designation date/version"
+pangolin-data:
+    type: string
+    default: "None"
+    description: "Pangolin-data version"
+nextclade:
+    type: string
+    default: "None"
+    description: "Nextclade version"
+nextclade-data:
+    type: string
+    default: "None"
+    description: "Nextclade dataset date tag"
+nextclade-include-recomb:
+    type: boolean
+    default: True
+    description: "optionally download Nextclade dataset with or without recombinant sequences"
+pangolin_fast:
+    type: boolean
+    default: False
+    description: "toggle Pangolin faster analysis which uses pangolearn in place of usher at the cost of accuracy"
 required:
     - min_len
     - min_qual

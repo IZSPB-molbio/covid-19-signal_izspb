@@ -1,7 +1,7 @@
 name: ivar
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - ivar=1.3

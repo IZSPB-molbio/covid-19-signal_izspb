@@ -1,7 +1,7 @@
 name: bamUtils
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
   - defaults
 dependencies:
   - bamutil=1.0.15
